@@ -185,26 +185,6 @@ const swiperGraduate = new Swiper(".graduate__slider", {
 
 });
 
-$(function () {
-
-  var formFixed = $("#form-fixed"),
-    formFixedActive = $("#form-fixed").innerHeight() + 3000,
-    scrollOffset = $(window).scrollTop();
-  checkScroll(scrollOffset);
-
-  $(window).on("scroll", function () {
-    scrollOffset = $(this).scrollTop();
-    checkScroll(scrollOffset);
-  });
-
-  function checkScroll(scrollOffset) {
-    if (scrollOffset >= formFixedActive) {
-      formFixed.addClass("fixed");
-    } else {
-      formFixed.removeClass("fixed");
-    }
-  }
-});
 
 
 
@@ -338,166 +318,11 @@ $(function () {
 
 });
 
-$(function () {
-  $('[data-code]').mouseenter(function () {
-    $('.district span').html($(this).attr('data-title'));
-    $('.district').show();
-  });
-  $('[data-code]').mouseleave(function () {
-    if (!$('.rf-map').hasClass("open")) {
-      $('.district').hide();
-    }
-  });
-  $('.rf-map').on('click', '[data-code], .district-links div', function () {
-    let id = $(this).attr('data-code');
-    if ($('#' + id).text() != '') {
-      $('.district').show();
-      $('.district span').html($(this).attr('data-title'));
-      $('[data-code]').addClass('dropfill');
-      $(this).addClass('mainfill');
-      $('.rf-map').addClass('open');
-      $('#' + id).fadeIn();
-    }
-  });
-  $('.close-district').click(function () {
-    $('.rf-map').removeClass('open');
-    $('[data-code]').removeClass('dropfill');
-    $('[data-code]').removeClass('mainfill');
-    $('.district-text').hide();
-    $('.district').hide();
-  });
-  $('[data-code]').each(function () {
-    let id = $(this).attr('data-code');
-    let title = $(this).attr('data-title');
-    if ($('#' + id).text() != '') {
-      $('.district-links').append('<div data-title="' + title + '" data-code="' + id + '">' + title + '</div>');
-    }
-  });
-});
+
 
 $('.icon-close').on('click', function () {
   $('.video-widget__container').remove()
 })
-
-
-
-$('.video-widget__container').on('click', function () {
-  $(this).toggleClass('active');
-  if ($(this).hasClass('active')) {
-    $(this).children('.icon-close').addClass('active')
-    $(this).children('.video-widget__video--one').css('display', 'none')
-    $(this).append(` <video class="video-widget__video video-widget__video--two" loop="" autoplay="" playsinline="" preload="auto" controlslist="nodownload" disablepictureinpicture="">
-      <source src="static/video/oksan.mp4" type="video/mp4">
-      </video> `);
-  }
-  else {
-    $(this).children('.icon-close').removeClass('active')
-    $(this).children('.video-widget__video--one').css('display', '')
-    $(this).children('.video-widget__video--two').remove()
-  }
-})
-
-
-$.getJSON("static/trips.json", function(data) {
-
-  data.trips.sort(function(a, b) {
-    return new Date(a.start_date.replace(/\./g, '-')) - new Date(b.start_date.replace(/\./g, '-'));
-  });
-
-  var nearestDate = new Date(data.trips.filter(function(trip) {
-    return new Date(trip.start_date.replace(/\./g, '-')) >= new Date();
-  })[0].start_date.replace(/\./g, '-'));
-
-  setInterval(function() {
-  
-    var now = new Date();
-
-    var diff = nearestDate - now;
-
-    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-    var formattedTime =
-      (days < 10 ? "0" + days : days) +
-      "д " +
-      (hours < 10 ? "0" + hours : hours) +
-      " : " +
-      (minutes < 10 ? "0" + minutes : minutes) +
-      " : " +
-      (seconds < 10 ? "0" + seconds : seconds);
-
-    $(".form-fixed__date-num").text(formattedTime);
-
-    if (nearestDate < now) {
-      nearestDate = new Date(data.trips.filter(function(trip) {
-        return new Date(trip.start_date.replace(/\./g, '-')) >= now;
-      })[0].start_date.replace(/\./g, '-'));
-    }
-  }, 1000); 
-});
-
-
-$.getJSON('static/trips.json', function(data) {
-  var select = $('#tripSelect');
-  
-  $.each(data.trips, function(index, trip) {
-    var startDate = formatDate(trip.start_date);
-    var endDate = formatDate(trip.end_date);
-    
-    var option = $('<option>')
-      .text(trip.city + ' (' + startDate + ' - ' + endDate + ')')
-      .appendTo(select);
-  });
-  function formatDate(dateString) {
-    var dateParts = dateString.split('.');
-    var day = dateParts[2];
-    var month = dateParts[1];
-    var year = dateParts[0];
-    
-    if (day.length < 2) {
-      day = '0' + day;
-    }
-    
-    if (month.length < 2) {
-      month = '0' + month;
-    }
-    
-    return day + '.' + month + '.' + year;
-    }
-});
-
-
-
-$.getJSON("static/trips.json", function(data) {
-  var schedule = $(".schedule");
-  var trips = data.trips;
-
-  trips.forEach(function(trip) {
-    var city = trip.city;
-    var color = trip.color;
-    var startDate = trip.start_date;
-    var endDate = trip.end_date;
-    var status = trip.status;
-    var startDateFormatted = startDate.split(".").reverse().join(".");
-    var endDateFormatted = endDate.split(".").reverse().join(".");
-
-    var tripHtml = `<div class="schedule__inner">
-                      <div class="schedule__inner-item__town">${city}<span class="schedule__inner-item__color schedule__inner-item__color--${color}"></span></div>
-                      <div class="schedule__inner-item__block">
-                        <div class="schedule__inner-item__date">${startDateFormatted} - ${endDateFormatted}</div>
-                        <div class="schedule__inner-item__btn"><button class="btn btn--modal-json">${status}</button></div>
-                      </div>
-                    </div>`;
-
-    schedule.append(tripHtml);
-  });
-});
-
-
-
-
 
 $('.btn--modal').click(function () {
   $.fancybox.open({
@@ -505,15 +330,3 @@ $('.btn--modal').click(function () {
     type: 'inline'
   });
 });
-function openModalWithDelay() {
-  setTimeout(function () {
-    $('.btn--modal-json').click(function () {
-      $.fancybox.open({
-        src: '#form--modal',
-        type: 'inline'
-      });
-    });
-  }, 10000);
-}
-
-openModalWithDelay();

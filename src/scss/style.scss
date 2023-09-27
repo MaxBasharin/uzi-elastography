@@ -137,7 +137,7 @@ header.fixed {
     margin-bottom: 36px;
     div {
       margin-top: 12px;
-      font-size: 36px;
+      font-size: 35px;
       line-height: normal;
       display: inline-block;
       background-color: $blackColor;
@@ -879,7 +879,7 @@ header.fixed {
   }
 
   &__item {
-    max-width: 560px;
+    width: 560px;
     padding: 20px;
     background-color: #fff;
     border-radius: 15px;
@@ -3766,7 +3766,9 @@ header.fixed {
       box-shadow: $blockBoxShadow;
       padding: 40px;
       width: 50%;
-
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
       &--left {
         margin-right: 20px;
       }
@@ -4002,6 +4004,30 @@ header.fixed {
 }
 
 @media (max-width: 1100px) {
+.accordion {
+  &__item {
+    max-width: 560px;
+  }
+}
+
+.learning-about {
+  &__item {
+    width: 47%;
+  }
+}
+
+  .anatomy {
+    &__item {
+      width: 100%;
+    }
+    &__wrapper {
+      flex-direction: column;
+    }
+    video {
+      width: 50%;
+    }
+  }
+
   .intro__container {
     padding: 20px;
   }
@@ -4198,6 +4224,9 @@ header.fixed {
 }
 
 @media (max-width: 767px) {
+  .direction__accordion-item {
+    padding: 20px;
+  }
   .title {
     font-size: 32px;
     line-height: 36px;
@@ -4832,11 +4861,38 @@ header.fixed {
 }
 
 @media (max-width: 480px) {
+  .anatomy {
+    video {
+      width: 100%;
+    }
+  }
+  .learning-about {
+    padding: 30px 0;
+  }
+  .learning-about__item {
+    width: 100%;
+    padding-left: 60px;
+    margin-bottom: 30px;
+  }
   .intro {
     padding: 25px 0 40px;
+    &__title {
+      font-size: 24px;
+      line-height: 26px;
+      div {
+        font-size: 24px;
+        padding: 4px 8px;
+      }
+    }
   }
 
- 
+ .direction {
+  padding: 30px 0;
+ }
+
+ .anatomy {
+  padding: 30px 0;
+ }
 
   .form-fixed {
     padding: 20px;
@@ -4853,6 +4909,10 @@ header.fixed {
       }
     }
   }
+
+.frdo__wrapper {
+  padding: 20px;
+}
 
   .academic-work {
     padding: 80px 0 30px 0;
